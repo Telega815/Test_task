@@ -1,3 +1,4 @@
+package ru.test_task.tasks;
 
 /**
  * Class conteins common attributes of any animal. 

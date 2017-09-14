@@ -1,6 +1,7 @@
+package ru.test_task.tasks;
+
 import java.util.ArrayList;
 /**
- * Class conteins attributes cats. 
  * @autor telega815
  * @date 13.09.2017
  */
