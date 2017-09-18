@@ -10,22 +10,32 @@ public class Client {
 	private String name;
 	private final int id;
 	private int animalCount = 0;
-	private Animal emptyAnimal;
-	ArrayList<Animal> animals = new ArrayList<Animal>();
+	private ArrayList<Animal> animals = new ArrayList<Animal>();
 
 	/**
  	 * Constructor
  	 */
-	public Client(final String name, final String type, final String petName, final int id){
+	public Client(final String name, final int id){
 		this.name = name;
 		this.id = id;
-		emptyAnimal = Generator.createEmptyAnimal(id);
-		addAnimal(type, petName, id);
 	}
 
-	public void addAnimal(final String type, final String petName, final int id){
-		animals.add(Generator.createAnimal(petName, type, id));
+	public String getName(){
+		return name;
+	}
+	public void setName(final String name){
+		this.name = name;
+	}
+
+	public int getId() { return id; }
+
+	//-------------------------------------------------------------
+
+	public Animal addAnimal( final String petName, final String type, final int id){
+		Animal animal = Generator.createAnimal(petName, type, id);
+		animals.add(animal);
 		animalCount++;
+		return animal;
 	}
 
 	public void addAnimal(final Animal animal){
@@ -33,15 +43,26 @@ public class Client {
 		animalCount++;
 	}
 
-	public void removeAnimal(final String petName){
-		animals.remove(findAnimal(petName));
+	public boolean removeAnimal(Animal removingAnimal){
+		boolean result = false;
+		for (Animal animal : animals){
+			if (animal.getName().equals(removingAnimal.getName())){
+				result = animals.remove(animal);
+				break;
+			}
+		}
+		return result;
+
 	}
 
-	public Animal findAnimal(final String petName){
-		Animal foundedAnimal = emptyAnimal;;
+	public Animal findAnimal(final String petName) throws UserExeption{
+		Animal foundedAnimal = null;
 		for (Animal animal : animals) {
-			if(animal.getName() == petName)
+			if(animal.getName().equals(petName))
 				foundedAnimal = animal;
+			else {
+				throw new UserExeption("There's no animal with that name");
+			}
 		}
 		return foundedAnimal;
 	}

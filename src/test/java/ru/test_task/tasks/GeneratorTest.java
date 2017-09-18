@@ -1,6 +1,5 @@
 package ru.test_task.tasks;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -16,12 +15,6 @@ public class GeneratorTest {
         assertEquals("max", animal_d.getName());
         assertEquals("mary", animal_c.getName());
         assertEquals("moe", animal_cd.getName());
-    }
-
-    @Test
-    public void testEmptyAnimal() throws Exception {
-        Animal animal_empty = createEmptyAnimal(4);
-        assertEquals("There's no animal", animal_empty.getName());
     }
 
 }

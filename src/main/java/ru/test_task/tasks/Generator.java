@@ -6,7 +6,7 @@ package ru.test_task.tasks;
 public class Generator {
 
 	public static Animal createAnimal(final String name, final String type, final int id){
-		Animal animal = createEmptyAnimal(id);
+		Animal animal = null;
 		if (type.equals("Cat"))
 			animal = createCat(name,id);
 		else if (type.equals("Dog"))
@@ -17,9 +17,6 @@ public class Generator {
 		return animal;
 	}
 
-	public static EmptyAnimal createEmptyAnimal(final int id){
-		return new EmptyAnimal(id);
-	}
 
 	private static Cat createCat(final String name, final int id){
 		return new Cat(name, id);
