@@ -253,7 +253,11 @@ public class MyArrayList<E> implements List<E> {
     }
 
     public int lastIndexOf(Object o) {
-        return 0;
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if(arrayData[i].equals(o)) index = i;
+        }
+        return index;
     }
 
     public ListIterator<E> listIterator() {
