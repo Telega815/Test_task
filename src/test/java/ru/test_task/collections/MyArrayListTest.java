@@ -274,7 +274,16 @@ public class MyArrayListTest {
 
     @Test
     public void lastIndexOf() throws Exception {
-
+        MyArrayList<Integer> testArray = new MyArrayList<Integer>();
+        testArray.add(5);
+        testArray.add(4);
+        testArray.add(5);
+        testArray.add(5);
+        testArray.add(5);
+        testArray.add(6);
+        testArray.add(5);
+        testArray.add(7);
+        Assert.assertEquals(6,testArray.lastIndexOf(5));
     }
 
     @Test
