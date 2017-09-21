@@ -45,28 +45,7 @@ public class MyArrayList<E> implements List<E> {
     }
 
     public Iterator<E> iterator() {
-        Iterator<E> iterator = new Iterator<E>() {
-            private int next;
-            private int current = -1;
-            public boolean hasNext() {
-                next = current +1;
-                return next < size;
-            }
-
-            public E next() {
-                current++;
-                return (E)arrayData[current];
-            }
-
-            public void remove() {
-                if (MyArrayList.this.inBound(current)) {
-                    MyArrayList.this.remove(current);
-                    current--;
-                }else
-                    throw new IllegalArgumentException("Index must between 0 and " + (size - 1));
-            }
-        };
-        return iterator;
+        return new MyIterator<E>();
     }
 
     public Object[] toArray() {
@@ -205,7 +184,7 @@ public class MyArrayList<E> implements List<E> {
 
     }
 
-    public boolean add(E newObject){
+    public boolean add(E element){
         boolean result;
         try {
             size++;
@@ -213,10 +192,10 @@ public class MyArrayList<E> implements List<E> {
                 expandCapacity();
             }
 
-            arrayData[size-1] = newObject;
+            arrayData[size-1] = element;
             result = true;
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+        }catch (Exception exception){
+            System.out.println(exception.getMessage());
             result = false;
         }
 
@@ -261,15 +240,24 @@ public class MyArrayList<E> implements List<E> {
     }
 
     public ListIterator<E> listIterator() {
-        return null;
+        return new MyListIterator<E>();
     }
 
     public ListIterator<E> listIterator(int index) {
-        return null;
+        return new MyListIterator<E>(index);
     }
 
     public List<E> subList(int fromIndex, int toIndex) {
-        return null;
+        MyArrayList<E> newList = new MyArrayList<E>(toIndex-fromIndex);
+
+        if(fromIndex>toIndex){
+            throw new IllegalArgumentException("\"From\" index must be higher than \"to\" index");
+        }else if(this.inBound(fromIndex)&&this.inBound(toIndex)){
+            for (int i = fromIndex; i <= toIndex; i++) {
+                newList.add((E)this.arrayData[i]);
+            }
+        }else throw new IllegalArgumentException("Index must between 0 and " + (size - 1));
+        return newList;
     }
 
     private boolean inBound(final int index){
@@ -296,5 +284,85 @@ public class MyArrayList<E> implements List<E> {
             success = false;
         }
         return success;
+    }
+
+    private class MyIterator<T> implements Iterator<T>{
+        private int next;
+        private int current = -1;
+        public boolean hasNext() {
+            next = current +1;
+            return next < size;
+        }
+
+        public T next() {
+            current++;
+            return (T)arrayData[current];
+        }
+
+        public void remove() {
+            if (MyArrayList.this.inBound(current)) {
+                MyArrayList.this.remove(current);
+                current--;
+            }else
+                throw new IllegalArgumentException("Index must between 0 and " + (size - 1));
+        }
+    }
+
+    private class MyListIterator<T> extends MyIterator<T> implements ListIterator<T>{
+
+
+        MyListIterator(){
+            super.current = -1;
+        }
+
+        MyListIterator(int index){
+            if(MyArrayList.this.inBound(index)){
+                super.current = index;
+            }
+            else throw new IllegalArgumentException("Index must between 0 and " + (size - 1));
+        }
+        @Override
+        public boolean hasPrevious() {
+            if(super.current>0) return true;
+            return false;
+        }
+
+        @Override
+        public T previous() {
+            if(super.current>=0) {
+                super.current--;
+                return (T) MyArrayList.this.get(super.current+1);
+            }
+            return null;
+        }
+
+        @Override
+        public int nextIndex() {
+            return super.current+1;
+        }
+
+        @Override
+        public int previousIndex() {
+            return super.current-1;
+        }
+
+        @Override
+        public void set(T e) {
+            if (MyArrayList.this.inBound(super.current)) {
+                MyArrayList.this.set(super.current, (E) e);
+            }else
+                throw new IllegalArgumentException("Index must between 0 and " + (size - 1));
+        }
+        @Override
+        public void add(T e) {
+            super.current++;
+            if (MyArrayList.this.inBound(super.current)) {
+                MyArrayList.this.add(super.current, (E) e);
+            }else
+                throw new IllegalArgumentException("Index must between 0 and " + (size - 1));
+        }
+
+
+
     }
 }
